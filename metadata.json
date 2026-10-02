@@ -1,0 +1,6 @@
+{
+  "name": "DAR Reviewer",
+  "description": "Timed quiz reviewer with beginner, intermediate, and advanced levels covering agrarian law, land tenure, case law, Project SPLIT, and civil service ethics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
