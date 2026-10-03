@@ -1,4 +1,4 @@
-name: Build Android APK
+e: Build Android APK
 
 on:
   push:
@@ -30,5 +30,3 @@ jobs:
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dar-reviewer-app
-          path: app/build/outputs/apk/debug/app-debug.apk
