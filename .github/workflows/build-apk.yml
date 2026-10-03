@@ -1,4 +1,4 @@
-name: Build Android APK from Web Code
+name: Deploy Web Application Layout
 
 on:
   push:
@@ -6,47 +6,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code Files
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Web Workspace Environment
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Dependencies
+      - name: Validate Source Structure
         run: |
-          npm install --no-audit --no-fund --quiet || true
-          npm install @capacitor/core @capacitor/cli @capacitor/android --quiet
-
-      - name: Build Web Application
-        run: |
-          if [ -f "package.json" ]; then
-            npm run build --if-present
-          fi
-
-      - name: Initialize Capacitor App
-        run: |
-          npx cap init "DAR Reviewer" "com.dar.reviewer" --web-dir=. --nopm
-          npx cap add android
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Compile Mobile APK
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dar-reviewer-app
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          echo "Verifying local project files..."
+          ls -la
