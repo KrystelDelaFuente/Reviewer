@@ -1,4 +1,4 @@
-e: Build Android APK
+name: Build Android APK from Web Code
 
 on:
   push:
@@ -12,21 +12,41 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: |
+          npm install --no-audit --no-fund --quiet || true
+          npm install @capacitor/core @capacitor/cli @capacitor/android --quiet
+
+      - name: Build Web Application
+        run: |
+          if [ -f "package.json" ]; then
+            npm run build --if-present
+          fi
+
+      - name: Initialize Capacitor App
+        run: |
+          npx cap init "DAR Reviewer" "com.dar.reviewer" --web-dir=. --nopm
+          npx cap add android
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Compile Mobile APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-      - name: Grant Execute Permission for Gradle
-        run: chmod +x gradlew
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK Artifacts
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
+          name: dar-reviewer-app
+          path: android/app/build/outputs/apk/debug/app-debug.apk
