@@ -1,0 +1,9 @@
+{
+  "name": "dar-reviewer",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "build": "echo 'Building web assets...'"
+  }
+}
